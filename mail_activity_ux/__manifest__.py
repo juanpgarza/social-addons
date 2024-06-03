@@ -10,9 +10,12 @@
     "author": "juanpgarza",
     "license": "AGPL-3",
     "depends": ["mail",
+                "mail_activity_done", # OCA
+                "mail_activity_board" # OCA
             ],
     "data": [
         'views/mail_activity_views.xml',
+        'views/mail_activity_type_views.xml',
         ],
     "installable": True,
 }

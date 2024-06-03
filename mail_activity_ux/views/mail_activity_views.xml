@@ -8,6 +8,8 @@
         <field name="arch" type="xml">
             <field name="date_deadline" position="after">
                 <field name="priority" widget="badge" decoration-danger="priority == '1'" decoration-warning="priority == '2'" decoration-success="priority == '3'" optional="show"/>
+                <field name="approve_state" optional="show"/>
+                <field name="approval_required" optional="hide"/>
             </field>
         </field>
     </record>
@@ -17,10 +19,153 @@
         <field name="model">mail.activity</field>
         <field name="inherit_id" ref="mail.mail_activity_view_form_popup" />
         <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <field name="approval_required" invisible="1" />
+                    <!-- <button string="Confirm" name="action_confirm" states="draft" type="object" class="oe_highlight"/>                    
+                    <button string="Validate" name="action_validate" states="validate1" type="object" groups="hr_holidays.group_hr_holidays_manager" class="oe_highlight"/>                    
+                    <button string="Mark as Draft" name="action_draft" type="object" attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm', 'refuse'])]}"/> -->
+                    <button string="Aprobar" name="action_approve" type="object" class="oe_highlight" attrs="{'invisible': ['|',('approval_required', '=', False), ('approve_state', '!=', 'confirm')]} "/>
+                    <button string="Rechazar" name="action_refuse" type="object" class="oe_highlight" attrs="{'invisible': ['|',('approval_required', '=', False), ('approve_state', '!=', 'confirm')]} "/>
+                    <field name="approve_state" widget="statusbar" statusbar_visible="draft,confirm,refuse,validate" attrs="{'invisible': [('approval_required', '=', False)]}"/> 
+                </header>
+            </xpath>
             <field name="date_deadline" position="after">
                 <field name="priority" />
             </field>
+            <xpath
+                expr="//button[@name='action_done']"
+                position="attributes"
+            >
+                <attribute name="attrs">{'invisible': [('approval_required', '=', True),('approve_state', 'in', ('confirm','validate'))]}
+                </attribute>
+            </xpath>
+            <xpath
+                expr="//button[@name='action_done_schedule_next']"
+                position="attributes"
+            >
+                <attribute name="attrs">{'invisible': [('approval_required', '=', True),('approve_state', 'in', ('confirm','validate'))]}
+                </attribute>
+            </xpath>
+            <xpath expr="//sheet" position="after">
+            	<div class="oe_chatter">
+            		<field name="message_ids" widget="mail_thread"/>
+            	</div>
+            </xpath>
         </field>
     </record>
+
+    <!-- SEARCH VIEW -->
+    <record id="mail_activity_view_search" model="ir.ui.view">
+        <field name="name">mail.activity.boards.view.search</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail_activity_board.mail_activity_view_search" />
+        <field name="arch" type="xml">
+            <!-- <xpath expr='//field[@name="res_model"]' position='before'>
+                <field name="user_id" />
+                <field name="res_name" string="Origin" />
+            </xpath> -->
+
+            <xpath expr='//filter[@name="activities_month"]' position='before'>
+                <filter name="approve_state_confirm" string="Para Aprobar" domain="[('approve_state', '=', 'confirm')]"/>
+                <!-- <filter
+                    string="Act. next month"
+                    name="activities_month"
+                    domain="[('date_deadline', '&lt;', (context_today()+datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"
+                    help="Show activities scheduled for next month."
+                />
+                <filter
+                    string="Act. next 6 months"
+                    name="activities_6_month"
+                    domain="[('date_deadline', '&lt;', (context_today()+datetime.timedelta(days=180)).strftime('%Y-%m-%d'))]"
+                    help="Show activities scheduled for next 6 months."
+                /> -->
+                <separator />
+
+            </xpath>
+
+            <!-- <xpath expr='//search/group' position='inside'>
+                <filter
+                    string="User"
+                    name='assigned_user'
+                    context="{'group_by':'user_id'}"
+                />
+                <filter
+                    string="Origin"
+                    name='origin'
+                    context="{'group_by': 'res_model_id'}"
+                />
+            </xpath> -->
+
+        </field>
+    </record>
+
+    <!-- 
+        A este form se accede desde la vista kanban!!!
+        
+        <record id="mail_activity_view_form_board" model="ir.ui.view">
+        <field name="name">mail.activity.form.activity</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail_activity_board.mail_activity_view_form_board" />
+        <field name="arch" type="xml">
+       
+        </field>
+    </record>     -->
+
+    <!--
+        ACTION
+    -->
+    <!-- <record model="ir.actions.act_window" id="open_boards_activities_all">
+        <field name="name">Todas</field>
+        <field name="res_model">mail.activity</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field
+            name="view_ids"
+            eval="[(5, 0, 0),
+                        (0, 0, {'view_mode': 'tree', 'view_id': ref('mail_activity_board_ux.mail_activity_view_tree')}),            
+                        (0, 0, {'view_mode': 'kanban', 'view_id': ref('mail_activity_board.mail_activity_view_kanban')}),
+                        (0, 0, {'view_mode': 'form', 'view_id': ref('mail_activity_view_form_popup')}),
+                        (0, 0, {'view_mode': 'calendar'}),
+                        (0, 0, {'view_mode': 'pivot'}),
+                        (0, 0, {'view_mode': 'graph'})]"
+        />
+        <field name="search_view_id" ref="mail_activity_board.mail_activity_view_search" />
+    </record>
+
+    <record model="ir.actions.act_window" id="open_boards_activities_toapprove">
+        <field name="name">Para aprobar</field>
+        <field name="res_model">mail.activity</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('approve_state','=','confirm'),('approval_required', '=', True),('active', '=', False)]</field>
+        <field name="context">{}</field>
+        <field
+            name="view_ids"
+            eval="[(5, 0, 0),
+                        (0, 0, {'view_mode': 'tree', 'view_id': ref('mail_activity_board_ux.mail_activity_view_tree')}),
+                        (0, 0, {'view_mode': 'form', 'view_id': ref('mail_activity_view_form_popup')})]"
+        />
+        <field name="search_view_id" ref="mail_activity_board.mail_activity_view_search" />
+    </record> -->
+
+    <!--
+    Menus
+    -->
+    <!-- <menuitem
+        id="board_menu_activities_all"
+        name="Todas"
+        parent="mail_activity_board.board_menu_activities"
+        action="open_boards_activities_all"        
+        sequence="1"
+    />
+
+    <menuitem
+        id="board_menu_activities_toapprove"
+        name="Para aprobar"
+        parent="mail_activity_board.board_menu_activities"
+        action="open_boards_activities_toapprove"        
+        sequence="1"
+    /> -->
 
 </odoo>
