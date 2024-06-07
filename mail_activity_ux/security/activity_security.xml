@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_solo_actividades_propias" model="res.groups">
+        <field name="name">Mostrar solo actividades propias</field>
+        <field name="category_id" ref="base.module_category_social"/>
+        <field name="comment">Solo podrán visualizar sus actividades.</field>
+    </record>
+
+
+    <record id="solo_actividades_propias_rule" model="ir.rule">
+        <field name="name">Actividades Propias</field>
+        <field ref="mail.model_mail_activity" name="model_id"/>
+        <field name="domain_force">['|',('user_id','=',user.id),('user_id','=',False)]</field>
+        <field name="groups" eval="[(4, ref('mail_activity_ux.group_solo_actividades_propias'))]"/>
+    </record>
+
+</odoo>

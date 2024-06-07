@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from datetime import datetime
 
 class MailActivity(models.Model):
     _name = 'mail.activity'
@@ -24,6 +25,26 @@ class MailActivity(models.Model):
     
     # approval_required = fields.Boolean(related='activity_type_id.approval_required')
     approval_required = fields.Boolean(compute="_compute_approval_required", string="Requiere aprobación", store=True)
+
+    dias_atraso = fields.Integer(compute="_dias_atraso",string="Días de atraso")
+
+    def _dias_atraso(self):
+        for rec in self:
+            fecha_vencimiento = rec.date_deadline
+            fecha_hecho = rec.date_done
+            if rec.done:            
+                delta = fecha_hecho - fecha_vencimiento
+                if delta.days < 0:
+                    rec.dias_atraso = False
+                else:
+                    rec.dias_atraso = delta.days
+            else:
+                delta = datetime.now().date() - fecha_vencimiento
+                if delta.days < 0:
+                    rec.dias_atraso = False
+                else:
+                    # esta vencida
+                    rec.dias_atraso = delta.days                    
     
     @api.model
     def create(self,values):
@@ -57,6 +78,9 @@ class MailActivity(models.Model):
     def action_refuse(self):        
         for rec in self:
             rec.approve_state = 'refuse'
+            rec.date_done = False
+            # No funciona!
+            # rec.state = 'today'
 
     @api.depends('activity_type_id')
     def _compute_approval_required(self):

@@ -4,16 +4,19 @@
 {
     "name": "mail_activity_ux",
     "summary": "",
-    "version": "15.0.1.0.0",
+    "version": "15.0.1.0.1",
     "category": "Social",
     "website": "https://github.com/juanpgarza/social-addons",
     "author": "juanpgarza",
     "license": "AGPL-3",
-    "depends": ["mail",
+    "depends": [
+                "base",
+                "mail",
                 "mail_activity_done", # OCA
                 "mail_activity_board" # OCA
             ],
     "data": [
+        'security/activity_security.xml',
         'views/mail_activity_views.xml',
         'views/mail_activity_type_views.xml',
         ],
