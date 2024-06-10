@@ -79,6 +79,7 @@ class MailActivity(models.Model):
         for rec in self:
             rec.approve_state = 'refuse'
             rec.date_done = False
+            rec.done = False
             # No funciona!
             # rec.state = 'today'
 

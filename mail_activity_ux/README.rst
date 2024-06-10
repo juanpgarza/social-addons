@@ -9,6 +9,7 @@ Detalle de cambios:
 #. Circuito de aprobación de las actividades
 #. Dias de atraso en las actividades
 #. Grupo de seguridad para impedir que un usuario pueda ver las actividades del resto
+#. Grupo de seguridad para "aprobadores de actividades": no muestre los botones aprobar y rechazar
 
 
 
