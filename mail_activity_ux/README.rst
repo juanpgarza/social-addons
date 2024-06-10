@@ -10,6 +10,7 @@ Detalle de cambios:
 #. Dias de atraso en las actividades
 #. Grupo de seguridad para impedir que un usuario pueda ver las actividades del resto
 #. Grupo de seguridad para "aprobadores de actividades": no muestre los botones aprobar y rechazar
+#. Filtro actividades "Para Aprobar" en el tablero
 
 
 

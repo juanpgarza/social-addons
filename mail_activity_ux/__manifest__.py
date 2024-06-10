@@ -4,7 +4,7 @@
 {
     "name": "mail_activity_ux",
     "summary": "",
-    "version": "15.0.1.0.1",
+    "version": "15.0.1.0.2",
     "category": "Social",
     "website": "https://github.com/juanpgarza/social-addons",
     "author": "juanpgarza",

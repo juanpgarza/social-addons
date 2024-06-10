@@ -57,47 +57,18 @@
         </field>
     </record>
 
-    <!-- SEARCH VIEW -->
-    <record id="mail_activity_view_search" model="ir.ui.view">
+    <record id="mail_activity_view_search_ux" model="ir.ui.view">
         <field name="name">mail.activity.boards.view.search</field>
         <field name="model">mail.activity</field>
-        <field name="inherit_id" ref="mail_activity_board.mail_activity_view_search" />
+        <field name="inherit_id" ref="mail.mail_activity_view_search" />
         <field name="arch" type="xml">
-            <!-- <xpath expr='//field[@name="res_model"]' position='before'>
-                <field name="user_id" />
-                <field name="res_name" string="Origin" />
-            </xpath> -->
 
-            <xpath expr='//filter[@name="activities_month"]' position='before'>
+            <xpath expr='//filter[@name="activities_upcoming_all"]' position='before'>
+                <separator />
                 <filter name="approve_state_confirm" string="Para Aprobar" domain="[('approve_state', '=', 'confirm')]"/>
-                <!-- <filter
-                    string="Act. next month"
-                    name="activities_month"
-                    domain="[('date_deadline', '&lt;', (context_today()+datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"
-                    help="Show activities scheduled for next month."
-                />
-                <filter
-                    string="Act. next 6 months"
-                    name="activities_6_month"
-                    domain="[('date_deadline', '&lt;', (context_today()+datetime.timedelta(days=180)).strftime('%Y-%m-%d'))]"
-                    help="Show activities scheduled for next 6 months."
-                /> -->
                 <separator />
 
             </xpath>
-
-            <!-- <xpath expr='//search/group' position='inside'>
-                <filter
-                    string="User"
-                    name='assigned_user'
-                    context="{'group_by':'user_id'}"
-                />
-                <filter
-                    string="Origin"
-                    name='origin'
-                    context="{'group_by': 'res_model_id'}"
-                />
-            </xpath> -->
 
         </field>
     </record>
