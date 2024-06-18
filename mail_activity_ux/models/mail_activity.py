@@ -7,6 +7,8 @@ class MailActivity(models.Model):
 
     priority = fields.Selection([("1", "Alta"),("2", "Media"), ("3", "Baja")], string="Prioridad", tracking=True,)
 
+    activity_group = fields.Integer("Grupo de actividades")
+
     approve_state = fields.Selection([
         ('draft', 'Borrador'),
         ('confirm', 'Para aprobar'),

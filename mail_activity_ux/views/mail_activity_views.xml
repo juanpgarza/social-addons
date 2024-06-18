@@ -10,7 +10,8 @@
                 <field name="priority" widget="badge" decoration-danger="priority == '1'" decoration-warning="priority == '2'" decoration-success="priority == '3'" optional="show"/>
                 <field name="approve_state" optional="show"/>
                 <field name="approval_required" optional="hide"/>
-                <field name="dias_atraso" optional="show"/>                
+                <field name="dias_atraso" optional="show"/>
+                <field name="activity_group" optional="hide"/>                
             </field>
         </field>
     </record>
@@ -68,6 +69,10 @@
                 <filter name="approve_state_confirm" string="Para Aprobar" domain="[('approve_state', '=', 'confirm')]"/>
                 <separator />
 
+            </xpath>
+
+            <xpath expr='//filter[@name="activittype"]' position='after'>
+                <filter name="group_activity_group" string="Grupo de actividades" context="{'group_by': 'activity_group'}"/>
             </xpath>
 
         </field>
