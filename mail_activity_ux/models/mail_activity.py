@@ -28,8 +28,9 @@ class MailActivity(models.Model):
     # approval_required = fields.Boolean(related='activity_type_id.approval_required')
     approval_required = fields.Boolean(compute="_compute_approval_required", string="Requiere aprobación", store=True)
 
-    dias_atraso = fields.Integer(compute="_dias_atraso",string="Días de atraso")
+    dias_atraso = fields.Integer(compute="_dias_atraso",string="Días de atraso",store=True)
 
+    @api.depends("done","date_deadline")
     def _dias_atraso(self):
         for rec in self:
             fecha_vencimiento = rec.date_deadline

@@ -66,12 +66,22 @@
 
             <xpath expr='//filter[@name="activities_upcoming_all"]' position='before'>
                 <separator />
-                <filter name="approve_state_confirm" string="Para Aprobar" domain="[('approve_state', '=', 'confirm')]"/>
+                    <filter name="my_activities_filter" string="Mis actividades" domain="[('user_id', '=', uid)]" />
                 <separator />
-
+                    <filter name="approve_state_confirm" string="Para Aprobar" domain="[('approve_state', '=', 'confirm')]"/>
+                <separator />                    
+                    <filter name="estado_terminada" string="Terminadas" domain="[('active', '=', False)]"/>
+                    <filter name="estado_todas" string="Todas" domain="['|', ('active', '=', False), ('active', '=', True)]"/>
+                <separator />
+                    <filter string="Fecha de Creación" name="creation_date" date="create_date"/>
+                    <filter string="Fecha Vencimiento" name="date_deadline" date="date_deadline"/>
+                    <filter string="Fecha de Finalización" name="done_date" date="date_done"/>
+                    <!-- <filter string="Closed Date" name="close_date" date="date_closed"/> -->
+                <separator/>                
             </xpath>
 
             <xpath expr='//filter[@name="activittype"]' position='after'>
+                <filter name="group_estado" string="Estado" context="{'group_by': 'state'}"/>
                 <filter name="group_activity_group" string="Grupo de actividades" context="{'group_by': 'activity_group'}"/>
             </xpath>
 
