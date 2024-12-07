@@ -20,5 +20,5 @@
         'views/mail_activity_views.xml',
         'views/mail_activity_type_views.xml',
         ],
-    "installable": True,
+    "installable": False,
 }
