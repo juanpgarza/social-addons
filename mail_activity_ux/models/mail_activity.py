@@ -49,9 +49,9 @@ class MailActivity(models.Model):
                     # esta vencida
                     rec.dias_atraso = delta.days                    
     
-    @api.model
-    def create(self,values):
-        res = super(MailActivity,self).create(values)
+    @api.model_create_multi
+    def create(self,vals_list):
+        res = super(MailActivity,self).create(vals_list)
         res.approve_state = 'draft'
         return res
 

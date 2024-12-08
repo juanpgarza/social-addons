@@ -27,9 +27,9 @@
                     <!-- <button string="Confirm" name="action_confirm" states="draft" type="object" class="oe_highlight"/>                    
                     <button string="Validate" name="action_validate" states="validate1" type="object" groups="hr_holidays.group_hr_holidays_manager" class="oe_highlight"/>                    
                     <button string="Mark as Draft" name="action_draft" type="object" attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm', 'refuse'])]}"/> -->
-                    <button string="Aprobar" name="action_approve" groups="mail_activity_ux.group_aprobador_de_actividades" type="object" class="oe_highlight" attrs="{'invisible': ['|',('approval_required', '=', False), ('approve_state', '!=', 'confirm')]} "/>
-                    <button string="Rechazar" name="action_refuse" groups="mail_activity_ux.group_aprobador_de_actividades" type="object" class="oe_highlight" attrs="{'invisible': ['|',('approval_required', '=', False), ('approve_state', '!=', 'confirm')]} "/>
-                    <field name="approve_state" widget="statusbar" statusbar_visible="draft,confirm,refuse,validate" attrs="{'invisible': [('approval_required', '=', False)]}"/> 
+                    <button string="Aprobar" name="action_approve" groups="mail_activity_ux.group_aprobador_de_actividades" type="object" class="oe_highlight" invisible="not approval_required or approve_state != 'confirm'"/>
+                    <button string="Rechazar" name="action_refuse" groups="mail_activity_ux.group_aprobador_de_actividades" type="object" class="oe_highlight" invisible="not approval_required or approve_state != 'confirm'"/>
+                    <field name="approve_state" widget="statusbar" statusbar_visible="draft,confirm,refuse,validate" invisible="not approval_required"/> 
                 </header>
             </xpath>
             <field name="date_deadline" position="after">
@@ -37,19 +37,11 @@
                 <field name="priority" />
                 <field name="activity_group" />
             </field>
-            <xpath
-                expr="//button[@name='action_done']"
-                position="attributes"
-            >
-                <attribute name="attrs">{'invisible': [('approval_required', '=', True),('approve_state', 'in', ('confirm','validate'))]}
-                </attribute>
+            <xpath expr="//button[@name='action_done']" position="attributes">
+                <attribute name="invisible">approval_required and approve_state in ('confirm', 'validate')</attribute>
             </xpath>
-            <xpath
-                expr="//button[@name='action_done_schedule_next']"
-                position="attributes"
-            >
-                <attribute name="attrs">{'invisible': [('approval_required', '=', True),('approve_state', 'in', ('confirm','validate'))]}
-                </attribute>
+            <xpath expr="//button[@name='action_done_schedule_next']" position="attributes">
+                <attribute name="invisible">approval_required and approve_state in ('confirm', 'validate')</attribute>
             </xpath>
             <xpath expr="//sheet" position="after">
             	<div class="oe_chatter">
