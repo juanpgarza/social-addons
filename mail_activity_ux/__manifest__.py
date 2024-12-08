@@ -4,7 +4,7 @@
 {
     "name": "mail_activity_ux",
     "summary": "",
-    "version": "15.0.1.0.5",
+    "version": "17.0.1.0.0",
     "category": "Social",
     "website": "https://github.com/juanpgarza/social-addons",
     "author": "juanpgarza",
@@ -20,5 +20,5 @@
         'views/mail_activity_views.xml',
         'views/mail_activity_type_views.xml',
         ],
-    "installable": False,
+    "installable": True,
 }
