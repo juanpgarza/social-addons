@@ -3,7 +3,7 @@
 {
     "name": "social_ux",
     "summary": "",
-    "version": "17.0.1.0.0",
+    "version": "18.0.1.0.0",
     "category": "Social",
     "website": "https://github.com/juanpgarza/social-addons",
     "author": "juanpgarza",
@@ -15,5 +15,5 @@
     "data": [
             'security/pronto_security.xml',
         ],
-    "installable": False,
+    "installable": True,
 }
