@@ -13,6 +13,6 @@ class MailThread(models.AbstractModel):
                                                             ('res_id', '=', self.id),
                                                             ('partner_id', '=',self.partner_id.id)])
 
-                follower_record.write({'subtype_ids': [(3, 1,_)]})
+                follower_record.sudo().write({'subtype_ids': [(3, 1,_)]})
 
                 
